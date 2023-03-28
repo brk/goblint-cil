@@ -104,7 +104,7 @@ the name of a file containing the output of the C preprocessor.
 The <span style="font-family:monospace">Mergecil.merge: Cil.file list -&gt; string -&gt; Cil.file</span> function merges
 multiple files. You can then invoke your analysis function on the resulting
 <span style="font-family:monospace">Cil.file</span> data structure. You might want to call
-<span style="font-family:monospace">Rmtmps.removeUnusedTemps</span> first to clean up the prototypes and variables
+<span style="font-family:monospace">RmUnused.removeUnused</span> first to clean up the prototypes and variables
 that are not used. Then you can call the function <span style="font-family:monospace">Cil.dumpFile:
 cilPrinter -&gt; out_channel -&gt; Cil.file -&gt; unit</span> to print the file to a
 given output channel. A good <span style="font-family:monospace">cilPrinter</span> to use is
