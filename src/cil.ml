@@ -2978,6 +2978,7 @@ let initGccBuiltins () : unit =
   H.add h "__builtin_inff" (floatType, [], false);
   H.add h "__builtin_infl" (longDoubleType, [], false);
   H.add h "__builtin_memcpy" (voidPtrType, [ voidPtrType; voidConstPtrType; sizeType ], false);
+  H.add h "__builtin_memchr" (voidPtrType, [voidConstPtrType; intType; ulongType], false);
   H.add h "__builtin_mempcpy" (voidPtrType, [ voidPtrType; voidConstPtrType; sizeType ], false);
   H.add h "__builtin_memset" (voidPtrType,
                               [ voidPtrType; intType; intType ], false);
@@ -3052,6 +3053,7 @@ let initGccBuiltins () : unit =
   H.add h "__builtin_sqrtl" (longDoubleType, [ longDoubleType ], false);
 
   H.add h "__builtin_stpcpy" (charPtrType, [ charPtrType; charConstPtrType ], false);
+  H.add h "__builtin_strcat" (charPtrType, [charPtrType; charConstPtrType], false);
   H.add h "__builtin_strchr" (charPtrType, [ charPtrType; intType ], false);
   H.add h "__builtin_strcmp" (intType, [ charConstPtrType; charConstPtrType ], false);
   H.add h "__builtin_strcpy" (charPtrType, [ charPtrType; charConstPtrType ], false);

@@ -1645,6 +1645,7 @@ asmattr:
      /* empty */                        { [] }
 |    VOLATILE  asmattr                  { ("volatile", []) :: $2 }
 |    CONST asmattr                      { ("const", []) :: $2 }
+|    INLINE asmattr                     { ("inline", []) :: $2 }
 ;
 asmtemplate:
     one_string_constant                          { [$1] }
@@ -1682,15 +1683,15 @@ asmopname:
 
 asmclobber:
     /* empty */                         { [] }
-| COLON asmcloberlst                    { $2 }
+| COLON asmclobberlst                   { $2 }
 ;
-asmcloberlst:
+asmclobberlst:
     /* empty */                         { [] }
-| asmcloberlst_ne                       { $1 }
+| asmclobberlst_ne                       { $1 }
 ;
-asmcloberlst_ne:
+asmclobberlst_ne:
    one_string_constant                           { [$1] }
-|  one_string_constant COMMA asmcloberlst_ne     { $1 :: $3 }
+|  one_string_constant COMMA asmclobberlst_ne    { $1 :: $3 }
 ;
 
 %%
