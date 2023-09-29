@@ -1527,6 +1527,9 @@ val setTypeSigAttrs: attributes -> typsig -> typsig
 (** Get the top-level attributes of a signature *)
 val typeSigAttrs: typsig -> attributes
 
+(** Add some attributes to a typsig *)
+val typeSigAddAttrs: attributes -> typsig -> typsig
+
 (*********************************************************)
 (**  {b Lvalues} *)
 
