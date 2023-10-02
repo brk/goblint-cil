@@ -75,6 +75,12 @@ let nocil: int ref = ref (-1)
     *)
 let alwaysGenerateVarDecl = false
 
+(** Add an attribute to all variables which are not declared at the top scope,
+    so tools building on CIL can know which variables were pulled up.
+    Should be disabled when printing CIL code, as compilers will warn about this attribute.
+*)
+let addNestedScopeAttr = ref false
+
 (** Indicates whether we're allowed to duplicate small chunks. *)
 let allowDuplication: bool ref = ref true
 
@@ -557,9 +563,19 @@ let alphaConvertVarAndAddToEnv (addtoenv: bool) (vi: varinfo) : varinfo =
   in
   (* Store all locals in the slocals (in reversed order). We'll reverse them
      and take out the formals at the end of the function *)
-  if not vi.vglob then
-    !currentFunctionFDEC.slocals <- newvi :: !currentFunctionFDEC.slocals;
-
+  if not vi.vglob then (
+    (if !addNestedScopeAttr then
+      (* two scopes implies top-level scope in the function, one is created for the FUNDEF (includes formals etc),
+         one for the body which is a block *)
+      match !scopes with
+      | _::_::_::_ ->
+        (* i.e.  List.length scopes > 2 *)
+        newvi.vattr <- Attr("goblint_cil_nested", []) :: newvi.vattr
+      | _ -> ()
+    );
+    !currentFunctionFDEC.slocals <- newvi :: !currentFunctionFDEC.slocals
+  )
+  ;
   (if addtoenv then
     if vi.vglob then
       addGlobalToEnv vi.vname (EnvVar newvi)
