@@ -4658,7 +4658,8 @@ and doExp (asconst: bool)   (* This expression is used as a constant *)
                         prechunk := (fun _ -> empty);
                         piscall := false;
                         let compatible =
-                          try ignore(combineTypes CombineOther t1 t2); true
+                          (* This built-in function ignores top level qualifiers (e.g., const, volatile). *)
+                          try ignore(combineTypes CombineOther (removeOuterQualifierAttributes t1) (removeOuterQualifierAttributes t2)); true
                           with Failure _ -> false
                         in
                         if compatible then
