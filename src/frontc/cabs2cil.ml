@@ -63,6 +63,11 @@ let continueOnError = true
 (** Turn on tranformation that forces correct parameter evaluation order *)
 let forceRLArgEval = ref false
 
+(** By default, we warn as large constants cannot be appropriately represented as OCaml floats.
+    This can be set to true by tools that are aware of this problem and only use the string component of CReal
+    to avoid emitting warnings that are spurious in that context. *)
+let silenceLongDoubleWarning = ref false
+
 (** Leave a certain global alone. Use a negative number to disable. *)
 let nocil: int ref = ref (-1)
 
@@ -3706,7 +3711,7 @@ and doExp (asconst: bool)   (* This expression is used as a constant *)
               else
                 str, FDouble
             in
-            if kind = FLongDouble || kind = FFloat128 then
+            if (kind = FLongDouble || kind = FFloat128) && not !silenceLongDoubleWarning then
               (* We only have 64-bit values in Ocaml *)
               E.log "treating %a constant %s as double constant at %a (only relevant if first argument of CReal is used).\n"
                 d_fkind kind str d_loc !currentLoc;

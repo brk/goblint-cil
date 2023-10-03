@@ -41,6 +41,11 @@ val convFile: Cabs.file -> Cil.file
 (** Turn on tranformation that forces correct parameter evaluation order *)
 val forceRLArgEval: bool ref
 
+(** By default, we warn as large constants cannot be appropriately represented as OCaml floats.
+    This can be set to true by tools that are aware of this problem and only use the string component of CReal
+    to avoid emitting warnings that are spurious in that context. *)
+val silenceLongDoubleWarning: bool ref
+
 (** Set this integer to the index of the global to be left in CABS form. Use
    -1 to disable *)
 val nocil: int ref
